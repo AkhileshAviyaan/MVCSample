@@ -1,4 +1,5 @@
 ﻿using Bulky.Data;
+using Bulky.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bulky.Controllers
@@ -18,7 +19,17 @@ namespace Bulky.Controllers
         }
 		public IActionResult Create()
 		{
-			return RedirectToAction("Index");
+			return View();
 		}
+
+  //      [HttpPost]
+		//public IActionResult Create()
+		//{
+  //          if (category == null)
+  //          {
+
+  //          }
+
+		//}
 	}
 }

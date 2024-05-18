@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Bulky.Migrations
+namespace Datas.Migrations
 {
     /// <inheritdoc />
     public partial class afterchangingarchitecture : Migration

@@ -18,7 +18,6 @@ namespace Datas.Repository
 		void ICategoryRepository.Update(Category category)
 		{
 			_db.Update(category);
-
 		}
 	}
 }

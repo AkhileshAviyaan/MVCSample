@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Bulky.Migrations
+namespace Datas.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20240516165515_sedding")]

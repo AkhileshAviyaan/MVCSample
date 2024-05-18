@@ -41,15 +41,15 @@ namespace Bulky.Areas.Admin.Controllers
 
         }
         [HttpPost]
-        public IActionResult Edit(Category cateObj)
+        public IActionResult Edit(Category obj)
         {
-            if (cateObj != null && ModelState.IsValid)
+            if (obj != null && ModelState.IsValid)
             {
-                _unitOfWork.Category.Update(cateObj);
+                _unitOfWork.Category.Update(obj);
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            return View(cateObj);
+            return View(obj);
 
         }
 

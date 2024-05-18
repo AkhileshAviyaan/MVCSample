@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Bulky.Migrations
+namespace Datas.Migrations
 {
     /// <inheritdoc />
     public partial class sedding : Migration

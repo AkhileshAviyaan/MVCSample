@@ -9,6 +9,6 @@ namespace Datas.Repository.IRepository
 {
 	public interface IProductRepository: IRepository<Product>
 	{
-		void Update(Category category);
+		void Update(Product category);
 	}
 }

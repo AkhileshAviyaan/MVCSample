@@ -35,6 +35,7 @@ namespace Bulky.Areas.Admin.Controllers
             {
                 _unitOfWork.Category.Add(catobj);
                 _unitOfWork.Save();
+                TempData["success"] = "Category Created Successfully";
                 return RedirectToAction("Index");
             }
             return View(catobj);
@@ -47,7 +48,8 @@ namespace Bulky.Areas.Admin.Controllers
             {
                 _unitOfWork.Category.Update(obj);
                 _unitOfWork.Save();
-                return RedirectToAction("Index");
+				TempData["success"] = "Category Updated Successfully";
+				return RedirectToAction("Index");
             }
             return View(obj);
 
@@ -70,7 +72,8 @@ namespace Bulky.Areas.Admin.Controllers
             if (categorySelected == null) return NotFound();
             _unitOfWork.Category.Remove(categorySelected);
             _unitOfWork.Save();
-            return RedirectToAction("Index");
+			TempData["success"] = "Category Deleted Successfully";
+			return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int? id)

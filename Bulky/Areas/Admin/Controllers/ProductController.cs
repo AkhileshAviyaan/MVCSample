@@ -32,10 +32,10 @@ namespace Bulky.Areas.Admin.Controllers
 			{
 				_unitOfWork.Product.Add(obj);
 				_unitOfWork.Save();
+				TempData["success"] = "Product Created Successfully";
 				return RedirectToAction("Index");
 			}
 			return View(obj);
-
 		}
 		[HttpPost]
 		public IActionResult Edit(Product obj)
@@ -44,6 +44,7 @@ namespace Bulky.Areas.Admin.Controllers
 			{
 				_unitOfWork.Product.Update(obj);
 				_unitOfWork.Save();
+				TempData["success"] = "Product Updated Successfully";
 				return RedirectToAction("Index");
 			}
 			return View(obj);
@@ -66,6 +67,7 @@ namespace Bulky.Areas.Admin.Controllers
 			if (ProductSelected == null) return NotFound();
 			_unitOfWork.Product.Remove(ProductSelected);
 			_unitOfWork.Save();
+			TempData["success"] = "Product Deleted Successfully";
 			return RedirectToAction("Index");
 		}
 

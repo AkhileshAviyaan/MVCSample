@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Datas
 {
-    public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : DbContext
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 		{
@@ -94,7 +94,7 @@ namespace Datas
 					Price50 = 22,
 					Price100 = 20,
 					CategoryId = 3
-				}	
+				}
 				);
 		}
 	}

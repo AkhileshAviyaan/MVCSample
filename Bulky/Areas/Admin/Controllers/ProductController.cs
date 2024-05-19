@@ -2,6 +2,7 @@
 using Models;
 using Microsoft.AspNetCore.Mvc;
 using Datas.Repository.IRepository;
+using Npgsql;
 
 namespace Bulky.Areas.Admin.Controllers
 {
@@ -27,24 +28,25 @@ namespace Bulky.Areas.Admin.Controllers
 		[HttpPost]
 		public IActionResult Create(Product obj)
 		{
+			_unitOfWork.Product.Add(obj);
+			_unitOfWork.Save();
+			TempData["success"] = "Product Created Successfully";
+			return RedirectToAction("Index");
 
-			if (ModelState.IsValid)
-			{
-				_unitOfWork.Product.Add(obj);
-				_unitOfWork.Save();
-				TempData["success"] = "Product Created Successfully";
-				return RedirectToAction("Index");
-			}
 			return View(obj);
 		}
 		[HttpPost]
 		public IActionResult Edit(Product obj)
 		{
-			if (obj != null && ModelState.IsValid)
+			if (obj != null)
 			{
 				_unitOfWork.Product.Update(obj);
-				_unitOfWork.Save();
-				TempData["success"] = "Product Updated Successfully";
+				try
+				{
+					_unitOfWork.Save();
+					TempData["success"] = "Product Updated Successfully";
+				}
+				catch (PostgresException ex) { }
 				return RedirectToAction("Index");
 			}
 			return View(obj);

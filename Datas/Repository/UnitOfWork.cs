@@ -1,4 +1,5 @@
 ﻿using Datas.Repository.IRepository;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace Datas.Repository
 		}
 		public void Save()
 		{
-			_db.SaveChanges();
+				_db.SaveChanges();
 		}
 	}
 }

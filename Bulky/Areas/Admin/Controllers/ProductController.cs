@@ -45,23 +45,40 @@ namespace Bulky.Areas.Admin.Controllers
 		[HttpPost]
 		public IActionResult Upsert(ProductVM productVM, IFormFile? file)
 		{
+
 			if (ModelState.IsValid)
 			{
 				if (file is not null)
 				{
+
 					string wwwRootPath = _webHostEnvironment.WebRootPath;
 					string dummyFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
 					string dummyFilePath = Path.Combine(wwwRootPath, @"Images\Product");
+					if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+					{
+						var oldImagePath = Path.Combine(wwwRootPath, productVM.Product.ImageUrl.TrimStart('\\'));
+						if (System.IO.File.Exists(oldImagePath))
+						{
+							System.IO.File.Delete(oldImagePath);
+						}
+					}
 					using (var fileStream = new FileStream(Path.Combine(dummyFilePath, dummyFileName), FileMode.Create))
 					{
 						file.CopyTo(fileStream);
 					}
 					productVM.Product.ImageUrl = @"\Images\Product\" + dummyFileName;
 				}
-
-				_unitOfWork.Product.Add(productVM.Product);
+				if (productVM.Product.Id != null)
+				{
+					_unitOfWork.Product.Update(productVM.Product);
+					TempData["success"] = "Product Updated Successfully";
+				}
+				else
+				{
+					_unitOfWork.Product.Add(productVM.Product);
+					TempData["success"] = "Product Created Successfully";
+				}
 				_unitOfWork.Save();
-				TempData["success"] = "Product Created Successfully";
 				return RedirectToAction("Index");
 			}
 			else
@@ -74,28 +91,20 @@ namespace Bulky.Areas.Admin.Controllers
 				return View(productVM);
 			}
 		}
-		[HttpPost]
-		public IActionResult Edit(Product obj)
-		{
-			if (obj != null & ModelState.IsValid)
-			{
-				_unitOfWork.Product.Update(obj);
-				try
-				{
-					_unitOfWork.Save();
-					TempData["success"] = "Product Updated Successfully";
-				}
-				catch (PostgresException ex) { }
-				return RedirectToAction("Index");
-			}
-			return View(obj);
-		}
 
 		[HttpPost, ActionName("Delete")]
 		public IActionResult DeletePost(Product ProductSelected)
 		{
 			if (ProductSelected == null) return NotFound();
 			_unitOfWork.Product.Remove(ProductSelected);
+			if (!string.IsNullOrEmpty(ProductSelected.ImageUrl))
+			{
+				var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, ProductSelected.ImageUrl.TrimStart('\\'));
+				if (System.IO.File.Exists(oldImagePath))
+				{
+					System.IO.File.Delete(oldImagePath);
+				}
+			}
 			_unitOfWork.Save();
 			TempData["success"] = "Product Deleted Successfully";
 			return RedirectToAction("Index");

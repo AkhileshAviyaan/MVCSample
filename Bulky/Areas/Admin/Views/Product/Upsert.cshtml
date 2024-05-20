@@ -1,6 +1,8 @@
 ﻿@model ProductVM
 
 <form method="Post" enctype="multipart/form-data">
+	<input asp-for="Product.Id" hidden />
+	<input asp-for="Product.ImageUrl" hidden />
 	<div class="row">
 		<div class="col-10">
 			<div class="border p-3 mt-4>
@@ -16,10 +18,10 @@
 					<span asp-validation-for="Product.Title" class="text-danger"></span>
 				</div>
 				<div class="mb-3">
-					<label asp-for="Product.Description" class="p-0">
+					<label asp-for="Product.Description" class="p-0 text-muted">
 					</label>
-					<textarea asp-for="Product.Description" class="form-control">
-			</textarea>
+					<input asp-for="Product.Description" class="form-control">
+			</input>
 				</div>
 				<div class="mb-3">
 					<label asp-for="Product.ISBN" class="p-0">
@@ -106,19 +108,13 @@
 @section Scripts {
 	@{
 		<partial name="_ValidationScriptsPartial" />
-		<script>
+		<script >
 			tinymce.init({
-				selector: 'textarea[name="Product.Description"]',
-				plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage advtemplate ai mentions tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss markdown',
-				toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-				tinycomments_mode: 'embedded',
-				tinycomments_author: 'Author name',
-				mergetags_list: [
-					{ value: 'First.Name', title: 'First Name' },
-					{ value: 'Email', title: 'Email' },
-				],
-				ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+				selector: 'textarea',  // change this value according to your HTML
+				plugins: 'a_tinymce_plugin',
+				a_plugin_option: true,
+				a_configuration_option: 400
 			});
-		</script>
+			</script>
 	}
 }

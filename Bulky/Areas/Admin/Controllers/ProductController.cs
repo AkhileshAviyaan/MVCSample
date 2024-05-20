@@ -3,7 +3,8 @@ using Models;
 using Microsoft.AspNetCore.Mvc;
 using Datas.Repository.IRepository;
 using Npgsql;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Models.ViewModels;
 namespace Bulky.Areas.Admin.Controllers
 {
 	[Area("Admin")]
@@ -20,25 +21,49 @@ namespace Bulky.Areas.Admin.Controllers
 			var objProductList = _unitOfWork.Product.GetAll();
 			return View(objProductList);
 		}
-		public IActionResult Create()
+		public IActionResult Upsert(int? id)
 		{
-			return View();
+			ProductVM productVM = new ProductVM();
+			if (id == null || id == 0)
+			{
+				productVM.Product = new Product();
+				productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+				{
+					Text = u.Name,
+					Value = u.Id.ToString()
+				});
+			}
+			else
+			{
+				productVM.Product = _unitOfWork.Product.Get(x => x.Id == id);
+			}
+				return View(productVM);
 		}
 
 		[HttpPost]
-		public IActionResult Create(Product obj)
+		public IActionResult Upsert(ProductVM productVM, IFormFile? file)
 		{
-			_unitOfWork.Product.Add(obj);
-			_unitOfWork.Save();
-			TempData["success"] = "Product Created Successfully";
-			return RedirectToAction("Index");
-
-			return View(obj);
+			if (ModelState.IsValid)
+			{
+				_unitOfWork.Product.Add(productVM.Product);
+				_unitOfWork.Save();
+				TempData["success"] = "Product Created Successfully";
+				return RedirectToAction("Index");
+			}
+			else
+			{
+				productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+				{
+					Text = u.Name,
+					Value = u.Id.ToString()
+				});
+				return View(productVM);
+			}
 		}
 		[HttpPost]
 		public IActionResult Edit(Product obj)
 		{
-			if (obj != null)
+			if (obj != null & ModelState.IsValid)
 			{
 				_unitOfWork.Product.Update(obj);
 				try
@@ -50,17 +75,6 @@ namespace Bulky.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 			return View(obj);
-		}
-
-		public IActionResult Edit(int? id)
-		{
-			if (id == null || id == 0)
-			{
-				return NotFound();
-			}
-			Product ProductFromDb = _unitOfWork.Product.Get(x => x.Id == id);
-			if (ProductFromDb == null) return NotFound();
-			return View(ProductFromDb);
 		}
 
 		[HttpPost, ActionName("Delete")]

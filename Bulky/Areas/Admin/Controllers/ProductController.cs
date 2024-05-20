@@ -20,7 +20,7 @@ namespace Bulky.Areas.Admin.Controllers
 		}
 		public IActionResult Index()
 		{
-			var objProductList = _unitOfWork.Product.GetAll();
+			var objProductList = _unitOfWork.Product.GetAll(includeProperties:"Category");
 			return View(objProductList);
 		}
 		public IActionResult Upsert(int? id)

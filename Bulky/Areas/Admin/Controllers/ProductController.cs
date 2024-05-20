@@ -120,5 +120,13 @@ namespace Bulky.Areas.Admin.Controllers
 			if (ProductFromDb == null) return NotFound();
 			return View(ProductFromDb);
 		}
+		#region APICALLS
+		[HttpGet]
+		public IActionResult GetAll(int id)
+		{
+			var objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category");
+			return Json(new { data = objProductList });
+		}
+		#endregion
 	}
 }

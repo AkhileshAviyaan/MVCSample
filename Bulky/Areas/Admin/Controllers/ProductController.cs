@@ -11,10 +11,12 @@ namespace Bulky.Areas.Admin.Controllers
 	public class ProductController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly IWebHostEnvironment _webHostEnvironment;
 
-		public ProductController(IUnitOfWork db)
+		public ProductController(IUnitOfWork db, IWebHostEnvironment webHostEnvironment)
 		{
 			_unitOfWork = db;
+			_webHostEnvironment = webHostEnvironment;
 		}
 		public IActionResult Index()
 		{
@@ -24,20 +26,20 @@ namespace Bulky.Areas.Admin.Controllers
 		public IActionResult Upsert(int? id)
 		{
 			ProductVM productVM = new ProductVM();
+			productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+			{
+				Text = u.Name,
+				Value = u.Id.ToString()
+			});
 			if (id == null || id == 0)
 			{
 				productVM.Product = new Product();
-				productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
-				{
-					Text = u.Name,
-					Value = u.Id.ToString()
-				});
 			}
 			else
 			{
 				productVM.Product = _unitOfWork.Product.Get(x => x.Id == id);
 			}
-				return View(productVM);
+			return View(productVM);
 		}
 
 		[HttpPost]
@@ -45,6 +47,18 @@ namespace Bulky.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				if (file is not null)
+				{
+					string wwwRootPath = _webHostEnvironment.WebRootPath;
+					string dummyFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+					string dummyFilePath = Path.Combine(wwwRootPath, @"Images\Product");
+					using (var fileStream = new FileStream(Path.Combine(dummyFilePath, dummyFileName), FileMode.Create))
+					{
+						file.CopyTo(fileStream);
+					}
+					productVM.Product.ImageUrl = @"\Images\Product\" + dummyFileName;
+				}
+
 				_unitOfWork.Product.Add(productVM.Product);
 				_unitOfWork.Save();
 				TempData["success"] = "Product Created Successfully";

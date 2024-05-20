@@ -9,7 +9,6 @@ namespace Bulky.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-
         public CategoryController(IUnitOfWork db)
         {
             _unitOfWork = db;
@@ -41,6 +40,7 @@ namespace Bulky.Areas.Admin.Controllers
             return View(catobj);
 
         }
+
         [HttpPost]
         public IActionResult Edit(Category obj)
         {
@@ -52,7 +52,6 @@ namespace Bulky.Areas.Admin.Controllers
 				return RedirectToAction("Index");
             }
             return View(obj);
-
         }
 
         public IActionResult Edit(int? id)

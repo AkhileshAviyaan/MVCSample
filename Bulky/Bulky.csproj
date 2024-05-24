@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Datas\Datas.csproj" />
-    <ProjectReference Include="..\Library\Library.csproj" />
+    <ProjectReference Include="..\Library\Utility.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
 

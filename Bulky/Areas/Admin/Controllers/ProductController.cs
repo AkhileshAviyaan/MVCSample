@@ -5,9 +5,12 @@ using Datas.Repository.IRepository;
 using Npgsql;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Utility;
 namespace Bulky.Areas.Admin.Controllers
 {
 	[Area("Admin")]
+	[Authorize(Roles = SD.Role_Admin)]
 	public class ProductController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;

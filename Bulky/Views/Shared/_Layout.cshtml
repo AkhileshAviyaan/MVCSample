@@ -29,31 +29,33 @@
 						<li class="nav-item">
 							<a class="nav-link text-light" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
 						</li>
-<li class="nav-item dropdown text-light">
-	<a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Content Management</a>
-	<div class="dropdown-menu bg-primary">
+						<li class="nav-item dropdown text-light">
+							<a class="nav-link dropdown-toggle text-light" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Content Management</a>
+							<div class="dropdown-menu bg-primary">
 								@if (User.IsInRole(SD.Role_Admin))
 								{
-					<a class="dropdown-item text-light" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+									<a class="dropdown-item text-light" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
 								}
 								else
 								{
-					<a class="dropdown-item text-muted disabled" href="#">Category</a>
+									<a class="dropdown-item text-muted disabled" href="#">Category</a>
 								}
-		<div class="dropdown-divider"></div>
+								<div class="dropdown-divider"></div>
 								@if (User.IsInRole(SD.Role_Admin))
 								{
-					<a class="dropdown-item text-light" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
+									<a class="dropdown-item text-light" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
 								}
 								else
 								{
-					<a class="dropdown-item text-muted disabled" href="#">Product</a>
+									<a class="dropdown-item text-muted disabled" href="#">Product</a>
 								}
-	</div>
-</li>
-
+							</div>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-light" asp-area="Customer" asp-controller="Conversion" asp-action="Index">Conversion</a>
+						</li>
 					</ul>
-					<partial name="_LoginPartial"/>
+					<partial name="_LoginPartial" />
 				</div>
 			</div>
 		</nav>
@@ -66,9 +68,9 @@
 	</div>
 
 	<footer class="border-top footer text-muted">
-		<div class="container">
+@* 		<div class="container">
 			Spread <i class="bi bi-heart-fill"></i> everywhere.
-		</div>
+		</div> *@
 	</footer>
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

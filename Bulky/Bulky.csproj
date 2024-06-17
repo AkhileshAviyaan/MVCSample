@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Conversion\Conversion.csproj" />
     <ProjectReference Include="..\Datas\Datas.csproj" />
     <ProjectReference Include="..\Library\Utility.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
